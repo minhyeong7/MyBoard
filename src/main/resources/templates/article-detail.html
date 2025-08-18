@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${article.title}">게시글</title>
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}">
+</head>
+<body>
+<header>
+  <a href="/" class="brand">🌀 임시로고</a>
+  <div>
+      <span sec:authorize="isAnonymous()">
+        <a href="/login">로그인</a>
+        <a href="/join">회원가입</a>
+      </span>
+    <span sec:authorize="isAuthenticated()">
+        <span>안녕하세요, <strong th:text="${displayName}"></strong>님!</span>
+        <form method="post" action="/logout" style="display:inline;">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+          <button type="submit">로그아웃</button>
+        </form>
+      </span>
+  </div>
+</header>
+<main>
+  <h1 th:text="${article.title}">제목</h1>
+  <input type="hidden" id="article-id" th:value="${article.id}">
+  <div th:text="${article.content}">내용</div>
+
+  <div th:if="${isOwner}">
+    <a th:href="@{'/articles/' + ${article.id} + '/edit'}" id="modify-btn-link">수정</a>
+    <button id="delete-btn">삭제</button>
+  </div>
+
+  <p><a href="/articles">목록</a></p>
+</main>
+<script src="/js/article.js" defer></script>
+</body>
+</html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title th:text="${article.title}">게시글</title>-->
+<!--  <meta name="_csrf" th:content="${_csrf.token}">-->
+<!--  <meta name="_csrf_header" th:content="${_csrf.headerName}">-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1 th:text="${article.title}">제목</h1>-->
+<!--<pre style="white-space: pre-wrap;">[[${article.content}]]</pre>-->
+
+
+<!--&lt;!&ndash;<input type="hidden" id="article-id" th:value="${article.id}" />&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash; 로그인한 사용자의 이메일과 글 작성자의 이메일이 같을 때만 버튼 보여주기 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;<div th:if="${#authentication.name == article.author.email}">&ndash;&gt;-->
+<!--&lt;!&ndash;  <a th:href="@{'/articles/' + ${article.id} + '/edit'}">&ndash;&gt;-->
+<!--&lt;!&ndash;    <button type="button" class="btn btn-warning">수정</button>&ndash;&gt;-->
+<!--&lt;!&ndash;  </a>&ndash;&gt;-->
+
+<!--&lt;!&ndash;  &lt;!&ndash; 삭제 버튼은 JS로 처리, 숨겨진 input으로 id 전달 &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;  <button type="button" id="delete-btn" class="btn btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<a href="/articles">목록 보기</a>&ndash;&gt;-->
+
+
+
+
+<!--<p>-->
+<!--  <a th:href="@{'/articles/' + ${article.id} + '/edit'}">수정</a>-->
+<!--  <a href="/articles">목록 보기</a>-->
+<!--</p>-->
+
+<!--&lt;!&ndash; 보통 삭제는 GET이 아닌 POST, DELETE 등으로 처리 &ndash;&gt;-->
+<!--&lt;!&ndash;<form th:action="@{'/articles/' + ${article.id} + '/delete'}" method="post" style="margin-top:12px;">&ndash;&gt;-->
+<!--&lt;!&ndash;  &lt;!&ndash; 확인을 누르면 삭제, 취소 시 요청 전송 x &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;  <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>&ndash;&gt;-->
+<!--&lt;!&ndash;</form>&ndash;&gt;-->
+
+<!--<input type="hidden" id="article-id" th:value="${article.id}" />-->
+<!--<button type="button" id="delete-btn">삭제</button>-->
+
+<!--<script src="/js/article.js" defer></script>-->
+<!--</body>-->
+<!--</html>-->
