@@ -1,61 +1,82 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 목록</title>
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background:#f4f5f7; color:#333; line-height:1.5; }
+        a { text-decoration: none; transition: 0.2s; }
+        a:hover { text-decoration: underline; }
+        button { cursor:pointer; border:none; border-radius:5px; padding:0.5rem 1rem; color:#fff; transition:0.2s; }
+        button.logout { background:#e74c3c; }
+        button.logout:hover { background:#c0392b; }
+
+        header { display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem; background:#364184; color:#fff; }
+        header a.brand { display:flex; align-items:center; gap:0.5rem; font-size:1.5rem; font-weight:bold; color:#fff; }
+        header nav { display:flex; gap:1rem; align-items:center; }
+        header nav a { background:#3498db; color:#fff; padding:0.4rem 0.8rem; border-radius:5px; }
+        header nav a:hover { background:#2980b9; }
+
+        main { max-width:700px; margin:2rem auto; padding:0 1rem; display:flex; flex-direction:column; gap:1.5rem; }
+        h1 { font-size:2rem; text-align:center; }
+
+        #new-article { display:inline-block; background:#2ecc71; color:#fff; padding:0.6rem 1.2rem; border-radius:6px; font-weight:600; text-decoration:none; }
+        #new-article:hover { background:#27ae60; }
+
+        #articles-list { list-style:none; background:#fff; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); padding:1rem 1.5rem; display:flex; flex-direction:column; gap:0.8rem; }
+        #articles-list li a { color:#3498db; font-weight:600; }
+        #articles-list li a:hover { color:#2980b9; }
+
+        .empty-message { text-align:center; font-style:italic; color:#999; }
+    </style>
 </head>
 <body>
-<header>
-    <a href="/" class="brand">🌀 임시로고</a>
-    <div>
-      <span sec:authorize="isAnonymous()">
-        <a href="/login">로그인</a>
-        <a href="/join">회원가입</a>
-      </span>
-        <span sec:authorize="isAuthenticated()">
-        <span>안녕하세요, <strong th:text="${displayName}"></strong>님!</span>
-        <form method="post" action="/logout" style="display:inline;">
-          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-          <button type="submit">로그아웃</button>
-        </form>
-      </span>
-    </div>
-</header>
-<h1>게시글 목록</h1>
-<div sec:authorize="isAuthenticated()">
-    <a href="/articles/new">새글</a> <!-- 비회원은 안 보임 -->
-</div>
 
-<div th:if="${#lists.isEmpty(articles)}">아직 글이 없습니다.</div>
-<ul th:unless="${#lists.isEmpty(articles)}">
-    <li th:each="a : ${articles}">
-        <a th:href="@{'/articles/' + ${a.id}}" th:text="${a.title}">제목</a>
-    </li>
-</ul>
+<header>
+    <a href="/" class="brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="32" height="32" fill="#fff">
+            <path d="M190.1 379.1C190.1 405 168.9 426.2 143 426.2C117.1 426.2 96 405 96 379.1C96 353.2 117.2 332 143.1 332L190.2
+                      332L190.2 379.1zM213.8 379.1C213.8 353.2 235 332 260.9 332C286.8 332 308 353.2 308 379.1L308 496.9C308 522.8 286.8 544 260.9 544C235 544 213.8 522.8 213.8 496.9L213.8 379.1zM260.9 190.1C235 190.1 213.8 168.9 213.8 143C213.8 117.1 235 96 260.9 96C286.8 96 308 117.2 308 143.1L308 190.2L260.9 190.2zM260.9 213.8C286.8 213.8 308 235 308 260.9C308 286.8 286.8 308 260.9 308L143.1 308C117.2 308 96 286.8 96 260.9C96 235 117.2 213.8 143.1 213.8L260.9 213.8zM449.9 260.9C449.9 235 471.1 213.8 497 213.8C522.9 213.8 544 235 544 260.9C544 286.8 522.8 308 496.9 308L449.8 308L449.8 260.9zM426.2 260.9C426.2 286.8 405 308 379.1 308C353.2 308 332 286.8 332 260.9L332 143.1C332 117.2 353.2 96 379.1 96C405 96 426.2 117.2 426.2 143.1L426.2 260.9zM379.1 449.9C405 449.9 426.2 471.1 426.2 497C426.2 522.9 405 544 379.1 544C353.2 544 332 522.8 332 496.9L332 449.8L379.1 449.8zM379.1 426.2C353.2 426.2 332 405 332 379.1C332 353.2 353.2 332 379.1 332L496.9 332C522.8 332 544 353.2 544 379.1C544 405 522.8 426.2 496.9 426.2L379.1 426.2z"/>
+        </svg>
+        MyBoard
+    </a>
+
+    <nav>
+        <span sec:authorize="isAnonymous()">
+            <a href="/login">로그인</a>
+            <a href="/join">회원가입</a>
+        </span>
+        <span sec:authorize="isAuthenticated()">
+            <span style="color:#fff;">안녕하세요, <strong th:text="${displayName}"></strong>님!</span>
+            <form method="post" action="/logout" style="display:inline;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button type="submit" class="logout">로그아웃</button>
+            </form>
+        </span>
+    </nav>
+</header>
+
+<main>
+    <h1>게시글 목록</h1>
+
+    <div sec:authorize="isAuthenticated()">
+        <a href="/articles/new" id="new-article">새글 작성</a>
+    </div>
+
+    <ul id="articles-list" th:if="${!#lists.isEmpty(articles)}">
+        <li th:each="a : ${articles}">
+            <a th:href="@{'/articles/' + ${a.id}}" th:text="${a.title}">제목</a>
+        </li>
+    </ul>
+
+    <div class="empty-message" th:if="${#lists.isEmpty(articles)}">
+        아직 글이 없습니다.
+    </div>
+</main>
 </body>
 </html>
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="ko" xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <meta name="_csrf" th:content="${_csrf.token}">-->
-<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}">-->
-<!--    <title>게시글 목록</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>게시글 목록</h1>-->
-<!--<p><a href="/articles/new">글 작성하기</a></p>-->
-
-<!--<div th:if="${#lists.isEmpty(articles)}">아직 글이 없습니다.</div>-->
-<!--<ul th:unless="${#lists.isEmpty(articles)}">-->
-<!--    <li th:each="a : ${articles}">-->
-<!--        <a th:href="@{'/articles/' + ${a.id}}" th:text="${a.title}">제목</a>-->
-<!--    </li>-->
-<!--</ul>-->
-<!--</body>-->
-<!--</html>-->
