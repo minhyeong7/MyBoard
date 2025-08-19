@@ -17,7 +17,7 @@
 
         /* 헤더 */
         header {
-            height: 80px;
+            height: 68px;
             width: 100%;
             background-color: rgb(54, 65, 132);
             display: flex;
@@ -46,22 +46,21 @@
         }
 
         nav { display: flex; gap: 1rem; align-items: center; }
-        nav a, nav button { font-weight: 600; }
+        nav a nav button { font-weight: 600; }
         nav a { color:#fff; padding:0.5rem 1rem; border-radius:5px; background-color:#3498db; }
         nav a:hover { background-color:#2980b9; }
 
         /* 메인 영역 */
         main { padding:2rem; display:flex; flex-direction:column; align-items:center; gap:2rem; }
 
-        #article-button { display:inline-block; background-color:#3498db; padding:0.8rem 1.5rem; border-radius:6px; font-weight:600; color:#fff; transition:0.2s; }
+        #article-button { display:inline-block; background-color:#3498db; padding:0.8rem 1.5rem; border-radius:6px; font-weight:600; color:#fff; transition:0.2s; ,  }
         #article-button:hover { background-color:#2980b9; }
 
-        /* 컨테이너 박스 */
+              /* 컨테이너 박스 - 카드 스타일 */
         #container {
-            border: 1px dashed #999;
             padding: 2rem;
-            border-radius: 8px;
-            background-color: #fff;
+            border-radius: 10px;                /* 모서리 둥글게 */
+            background-color: #fff;             /* 흰색 배경 */
             width: 100%;
             max-width: 400px;
             display: flex;
@@ -69,8 +68,9 @@
             gap: 1rem;
             align-items: center;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
         }
+
 
         #container span, #container div { display:flex; gap:1rem; justify-content:center; }
     </style>
@@ -79,13 +79,11 @@
 
 <header>
     <div class="brand-container">
-        <a href="/" class="brand">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
                 <path d="M190.1 379.1C190.1 405 168.9 426.2 143 426.2C117.1 426.2 96 405 96 379.1C96 353.2 117.2 332 143.1 332L190.2
                 332L190.2 379.1zM213.8 379.1C213.8 353.2 235 332 260.9 332C286.8 332 308 353.2 308 379.1L308 496.9C308 522.8 286.8 544 260.9 544C235 544 213.8 522.8 213.8 496.9L213.8 379.1zM260.9 190.1C235 190.1 213.8 168.9 213.8 143C213.8 117.1 235 96 260.9 96C286.8 96 308 117.2 308 143.1L308 190.2L260.9 190.2zM260.9 213.8C286.8 213.8 308 235 308 260.9C308 286.8 286.8 308 260.9 308L143.1 308C117.2 308 96 286.8 96 260.9C96 235 117.2 213.8 143.1 213.8L260.9 213.8zM449.9 260.9C449.9 235 471.1 213.8 497 213.8C522.9 213.8 544 235 544 260.9C544 286.8 522.8 308 496.9 308L449.8 308L449.8 260.9zM426.2 260.9C426.2 286.8 405 308 379.1 308C353.2 308 332 286.8 332 260.9L332 143.1C332 117.2 353.2 96 379.1 96C405 96 426.2 117.2 426.2 143.1L426.2 260.9zM379.1 449.9C405 449.9 426.2 471.1 426.2 497C426.2 522.9 405 544 379.1 544C353.2 544 332 522.8 332 496.9L332 449.8L379.1 449.8zM379.1 426.2C353.2 426.2 332 405 332 379.1C332
                 353.2 353.2 332 379.1 332L496.9 332C522.8 332 544 353.2 544 379.1C544 405 522.8 426.2 496.9 426.2L379.1 426.2z"/>
             </svg>
-        </a>
         <p class="brand-name">MyBoard</p>
     </div>
 
@@ -104,15 +102,12 @@
 </header>
 
 <main>
-    <a id="article-button" href="/articles">글 목록 보기</a>
+    <a  id="article-button" href="/articles">글 목록</a>
     <div id="container">
         <p>환영합니다! MyBoard에 오신 것을 환영합니다.</p>
         <span sec:authorize="isAnonymous()">
             <p>로그인 후 글 작성이 가능합니다.</p>
         </span>
-        <div sec:authorize="isAuthenticated()">
-            <p>사용자 전용 콘텐츠 영역</p>
-        </div>
     </div>
 </main>
 
