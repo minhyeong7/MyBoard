@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.newboard.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.newboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.newboard.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.newboard.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.newboard.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.newboard.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/newboard.iml" filepath="$PROJECT_DIR$/.idea/modules/newboard.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/newboard.main.iml" filepath="$PROJECT_DIR$/.idea/modules/newboard.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/newboard.test.iml" filepath="$PROJECT_DIR$/.idea/modules/newboard.test.iml" />
